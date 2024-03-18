@@ -13,7 +13,14 @@ env:
     MONGO_PASSWORD : ${{secrets.MONGO_PASSWORD}}
 jobs:
   unit-testing:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nodejs-version : [18,19,20]
+        os : [ubuntu-latest,macos-latest]
+        exclude:
+          - nodejs-version: 18
+            os: macos-latest
+    runs-on: ${{matrix.os}}
     steps:
       - name : checkout repo
         uses: actions/checkout@v4
@@ -21,7 +28,7 @@ jobs:
       - name: setup nodejs version - 18
         uses: actions/setup-node@v4
         with:
-          node-version : 18
+          node-version : ${{matrix.nodejs-version}}
 
       - name: install dependencies
         run : npm install
