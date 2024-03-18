@@ -55,9 +55,11 @@ jobs:
           with:
             node-version: 18
 
-        
+          
+        - name: install dependencies
+          run : npm install
+
         - name: Check Code Coverage
-       
           run: npm run coverage
 
         - name: Archive Test Result
